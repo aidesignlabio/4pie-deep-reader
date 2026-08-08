@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
+    print("zwds utf8 end-to-end calculation: start", flush=True)
     with tempfile.TemporaryDirectory() as folder:
         output = Path(folder) / "chart.json"
         env = os.environ.copy()
@@ -35,6 +36,11 @@ def main():
             env=env,
             timeout=60,
         )
+        print(f"nested_returncode={result.returncode}", flush=True)
+        if result.stdout:
+            print(result.stdout[-1000:], flush=True)
+        if result.stderr:
+            print(result.stderr[-2000:], file=sys.stderr, flush=True)
         assert result.returncode == 0, result.stderr
         chart = json.loads(output.read_text(encoding="utf-8"))
         ziwei = chart["systems"]["ziwei"]
