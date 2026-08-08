@@ -1,4 +1,4 @@
-import json, subprocess, sys, tempfile
+import json, os, subprocess, sys, tempfile
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -15,7 +15,8 @@ def main():
     with tempfile.TemporaryDirectory() as d:
         source=Path(d)/"chart.json"; output=Path(d)/"bazi_l1.json"
         source.write_text(json.dumps(chart,ensure_ascii=False),encoding="utf-8")
-        result=subprocess.run([sys.executable,str(ROOT/"scripts"/"adjudicate_bazi_l1.py"),str(source),str(output),"--as-of","2026-08-04"])
+        child_env=os.environ.copy(); child_env["PYTHONIOENCODING"]="utf-8"
+        result=subprocess.run([sys.executable,str(ROOT/"scripts"/"adjudicate_bazi_l1.py"),str(source),str(output),"--as-of","2026-08-04"],env=child_env)
         assert result.returncode==0
         data=json.loads(output.read_text(encoding="utf-8"))
         assert data["status"]=="ok"

@@ -2,7 +2,7 @@
 
 ## 1.0.3
 
-- Force UTF-8 decoding at every Zi Wei Node subprocess boundary, independent of the Windows console code page or `PYTHONUTF8` shell state.
+- Force UTF-8 at every Zi Wei Node boundary and unified CLI child process, independent of the Windows console code page or `PYTHONUTF8` shell state.
 - Serialize setup with a cross-platform installation lock: a retry waits for the active setup instead of launching a second pip/npm process and causing file locks.
 - Add regressions for CP950-safe Zi Wei calculation and concurrent installer protection.
 - Run the Windows regression suite without `PYTHONUTF8` to prevent this encoding bug from returning.

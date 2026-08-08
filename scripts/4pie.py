@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Unified 4PIE deterministic command launcher."""
-import argparse, subprocess, sys
+import argparse, os, subprocess, sys
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parent
@@ -23,5 +23,7 @@ def main():
     p.add_argument("command",choices=COMMANDS)
     p.add_argument("args",nargs=argparse.REMAINDER)
     a=p.parse_args()
-    return subprocess.call([sys.executable,str(COMMANDS[a.command]),*a.args])
+    child_env=os.environ.copy()
+    child_env["PYTHONIOENCODING"]="utf-8"
+    return subprocess.call([sys.executable,str(COMMANDS[a.command]),*a.args],env=child_env)
 if __name__=="__main__": raise SystemExit(main())
