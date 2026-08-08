@@ -36,7 +36,13 @@ jobs:
           # Keep log output readable without enabling Python UTF-8 mode; the
           # Zi Wei regression must still prove its own explicit decoder.
           $env:PYTHONIOENCODING = 'utf-8'
-          Get-ChildItem tests\test_*.py | Where-Object { $_.Name -ne 'test_zwds_utf8.py' } | ForEach-Object { & .\.venv\Scripts\python.exe $_.FullName; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE } }
+          Get-ChildItem tests\test_*.py | Where-Object { $_.Name -ne 'test_zwds_utf8.py' } | ForEach-Object {
+            Write-Host "RUN $($_.Name)"
+            & .\.venv\Scripts\python.exe $_.FullName
+            $testExit = $LASTEXITCODE
+            Write-Host "EXIT $($_.Name)=$testExit"
+            if ($testExit -ne 0) { exit $testExit }
+          }
           # The test host needs UTF-8 merely to load diagnostics on Windows.
           # Its nested calculation explicitly removes PYTHONUTF8, so the Zi
           # Wei child-process decoder is still tested under the legacy mode.
