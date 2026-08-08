@@ -1,37 +1,46 @@
-from datetime import datetime
-from pathlib import Path
-import importlib.util
 import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-PATH = ROOT / "scripts" / "calculator" / "calculators" / "zwds.py"
-spec = importlib.util.spec_from_file_location("zwds_under_test", PATH)
-zwds = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(zwds)
 
 
 def main():
-    captured = {}
-
-    class Result:
-        returncode = 0
-        stdout = json.dumps({"palaces": {}}, ensure_ascii=False)
-        stderr = ""
-
-    def fake_run(*args, **kwargs):
-        captured.update(kwargs)
-        return Result()
-
-    original = zwds.subprocess.run
-    zwds.subprocess.run = fake_run
-    try:
-        zwds.calculate_via_node(datetime(2002, 5, 4, 12, 0), 22.3193, 114.1694, 8, "M")
-    finally:
-        zwds.subprocess.run = original
-    assert captured["encoding"] == "utf-8"
-    assert captured["errors"] == "strict"
-    assert captured["env"]["PYTHONIOENCODING"] == "utf-8"
-    print("zwds utf8 subprocess contract: ok")
+    with tempfile.TemporaryDirectory() as folder:
+        output = Path(folder) / "chart.json"
+        env = os.environ.copy()
+        env.pop("PYTHONUTF8", None)
+        # Give the parent test readable logs without changing Python UTF-8 mode.
+        env["PYTHONIOENCODING"] = "utf-8"
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "4pie.py"),
+                "calculate",
+                "--datetime", "2002-05-04 12:00",
+                "--timezone", "Asia/Hong_Kong",
+                "--lat", "22.3193",
+                "--lon", "114.1694",
+                "--gender", "M",
+                "--as-of", "2026-08-08",
+                "--output", str(output),
+            ],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="strict",
+            env=env,
+            timeout=60,
+        )
+        assert result.returncode == 0, result.stderr
+        chart = json.loads(output.read_text(encoding="utf-8"))
+        ziwei = chart["systems"]["ziwei"]
+        assert ziwei["status"] == "ok", ziwei
+        assert len(ziwei["data"]["palaces"]) == 12
+    print("zwds utf8 end-to-end calculation: ok")
 
 
 if __name__ == "__main__":
