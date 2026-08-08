@@ -27,11 +27,13 @@ jobs:
       - name: Install and smoke test (Unix)
         if: runner.os != 'Windows'
         shell: bash
-        run: PYTHON_BIN=python ./setup.sh
+        run: PYTHON_BIN=python sh setup.sh
       - name: Run regression tests (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
-        run: Get-ChildItem tests\test_*.py | ForEach-Object { & .\.venv\Scripts\python.exe $_.FullName; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE } }
+        run: |
+          $env:PYTHONUTF8 = '1'
+          Get-ChildItem tests\test_*.py | ForEach-Object { & .\.venv\Scripts\python.exe $_.FullName; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE } }
       - name: Run regression tests (Unix)
         if: runner.os != 'Windows'
         shell: bash
