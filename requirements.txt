@@ -1,0 +1,9 @@
+pysweph>=2.10.3.5
+dashaflow>=0.3
+PyJHora==4.8.6
+timezonefinder>=6.5
+pytz>=2024.1
+PyYAML>=6.0
+reportlab>=4.2
+pypdf>=5.0
+Pillow>=10.0

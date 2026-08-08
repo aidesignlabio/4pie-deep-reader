@@ -1,0 +1,16 @@
+{
+  "name": "six-school-calculator-node",
+  "version": "1.0.0",
+  "description": "Node dependency bridge for deterministic Zi Wei Dou Shu calculation",
+  "main": "index.js",
+  "scripts": {
+    "test": "node -e \"const p=require('iztro/package.json'); if(p.version!=='2.5.8') process.exit(1); console.log('iztro='+p.version)\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "iztro": "2.5.8"
+  }
+}

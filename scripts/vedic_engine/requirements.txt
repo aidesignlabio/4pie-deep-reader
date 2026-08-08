@@ -1,0 +1,19 @@
+# vedic-calculator 依赖清单
+#
+# ⚠️ 不要直接 pip install -r requirements.txt！
+# ⚠️ 请使用 scripts/setup_env.py 自动安装（正确处理安装顺序）
+#
+# 原因: dashaflow 声明依赖 pyswisseph（已停更），但我们实际使用 pysweph（社区 fork）。
+# 直接 pip install 会导致包冲突。setup_env.py 通过 --no-deps 参数解决此问题。
+#
+# 手动安装顺序（如果不用 setup_env.py）：
+#   pip install pysweph>=2.10.3.5 pytz>=2024.1
+#   pip install dashaflow>=0.3 --no-deps
+#   pip install PyJHora==4.8.6
+#
+# Python 版本要求: 3.8 ~ 3.13（pysweph 为 C 扩展，暂无 3.14 预编译包）
+#
+pysweph>=2.10.3.5
+dashaflow>=0.3
+PyJHora==4.8.6
+pytz>=2024.1

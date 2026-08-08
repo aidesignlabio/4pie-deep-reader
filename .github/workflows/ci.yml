@@ -1,0 +1,44 @@
+name: 4PIE release validation
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.12']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install and smoke test (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: .\setup.ps1 -Python (Get-Command python).Source
+      - name: Install and smoke test (Unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: PYTHON_BIN=python ./setup.sh
+      - name: Run regression tests (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Get-ChildItem tests\test_*.py | ForEach-Object { & .\.venv\Scripts\python.exe $_.FullName; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE } }
+      - name: Run regression tests (Unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: for test in tests/test_*.py; do .venv/bin/python "$test"; done
+      - name: Privacy scan (Windows)
+        if: runner.os == 'Windows'
+        run: .\.venv\Scripts\python.exe scripts\privacy_scan.py .
+      - name: Privacy scan (Unix)
+        if: runner.os != 'Windows'
+        run: .venv/bin/python scripts/privacy_scan.py .

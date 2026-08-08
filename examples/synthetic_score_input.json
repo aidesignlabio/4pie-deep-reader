@@ -1,0 +1,24 @@
+{
+  "synthetic": true,
+  "domains": [
+    {
+      "domain": "career",
+      "time_modifier": 0,
+      "schools": [
+        {"school": "bazi", "support_strength": 3, "friction_strength": 2, "evidence_quality": 0.8},
+        {"school": "ziwei", "support_strength": 4, "friction_strength": 1, "evidence_quality": 0.9},
+        {"school": "western", "support_strength": 4, "friction_strength": 2, "evidence_quality": 0.9},
+        {"school": "vedic", "support_strength": 3, "friction_strength": 1, "evidence_quality": 0.85}
+      ],
+      "confidence_components": {
+        "calculation_completeness": 90,
+        "rule_specificity": 85,
+        "derivation_completeness": 88,
+        "independent_support": 85,
+        "time_stability": 80,
+        "falsifiability": 90
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,4 @@
+interface:
+  display_name: "4PIE Deep Reader"
+  short_description: "四派完整深讀、硬性Production Gate與固定Plain Deep PDF"
+  default_prompt: "完整計算並驗證八字、紫微、西占與吠陀，完成四派Dossier、跨派裁決、八領域評分及五年流年；只有全部通過Production Approval後，才用固定Plain Deep模板生成繁體中文PDF。"
