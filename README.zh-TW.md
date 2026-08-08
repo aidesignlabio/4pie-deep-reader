@@ -64,13 +64,15 @@ macOS／Linux：
 
 安裝只需執行一次。如果重試時看到 `SETUP_WAITING`，代表上一個安裝程序仍在執行；安裝器會等待，不會再啟動第二個 pip/npm。讓原程序完成後，再用 `.venv\Scripts\python scripts\4pie.py doctor` 做數秒級檢查，不應為每個案例重新安裝依賴或複製 `node_modules`。紫微子程序固定使用 UTF-8，不需要手動設定 `PYTHONUTF8`。
 
+首次安裝通常需時 2–10 分鐘。使用自動執行工具時，必須把硬性 timeout 設為至少 15 分鐘；外層工具超時但 `.setup.lock` 所記錄的安裝程序仍存活時，只需等待，禁止再次執行 setup。安裝完成後，所有計算、八字 L1、評分、驗證與 PDF 輸出均應經 `scripts/4pie.py` 執行，避免繞過 UTF-8 與 Production Gate。
+
 詳細工作方式見 [SKILL.md](SKILL.md)。真實個案必須放入已忽略的 `private_cases/`，公開前執行：
 
 ```powershell
 python scripts/privacy_scan.py .
 ```
 
-目前版本為 1.0.3 正式發佈版。計算流程、Production Gate 與 PDF 渲染均有回歸測試；命理解讀本身不宣稱科學驗證或預測準確率。Production Approval 代表資料與流程完整，不代表命理結論經科學驗證。
+目前版本為 1.0.4 正式發佈版。計算流程、Production Gate 與 PDF 渲染均有回歸測試；命理解讀本身不宣稱科學驗證或預測準確率。Production Approval 代表資料與流程完整，不代表命理結論經科學驗證。
 
 ## 點 Star 或支持作者
 

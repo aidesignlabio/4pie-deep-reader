@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-import argparse, json
+import argparse, json, sys
 from datetime import date, datetime
 from pathlib import Path
+
+for stream in (sys.stdout, sys.stderr):
+    if hasattr(stream, "reconfigure"):
+        stream.reconfigure(encoding="utf-8", errors="backslashreplace")
 
 CLASH={frozenset(x) for x in [('子','午'),('丑','未'),('寅','申'),('卯','酉'),('辰','戌'),('巳','亥')]}
 HARM={frozenset(x) for x in [('子','未'),('丑','午'),('寅','巳'),('卯','辰'),('申','亥'),('酉','戌')]}

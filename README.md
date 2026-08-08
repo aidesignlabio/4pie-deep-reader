@@ -32,6 +32,8 @@ If Windows resolves `python` to a broken launcher, pass a real interpreter expli
 
 Setup is one-time. If a previous setup is still running, a retry prints `SETUP_WAITING` and waits instead of starting a second pip/npm installation; let the first run finish. For later cases, run `.venv\Scripts\python scripts\4pie.py doctor`; do not reinstall dependencies. PDF output defaults to the compact `plain-deep` edition. The expanded `dashboard` edition is opt-in.
 
+First setup commonly needs 2–10 minutes. Automation tools must give the setup command a hard timeout of at least 15 minutes. If the outer tool times out while `.setup.lock` still points to a live installer, wait for that process; never launch setup again. After installation, run all operations through `scripts/4pie.py` so UTF-8 handling and production gates cannot be bypassed.
+
 ```bash
 ./setup.sh
 ```
@@ -66,7 +68,7 @@ Only the synthetic fixtures under `examples/` are safe to commit.
 
 ## Status
 
-Production release 1.0.3. The software pipeline, validation gates and PDF rendering are regression-tested; astrological interpretation itself is not scientifically validated and is not a guaranteed prediction. Do not use it for medical diagnosis, guaranteed financial outcomes or deterministic life decisions.
+Production release 1.0.4. The software pipeline, validation gates and PDF rendering are regression-tested; astrological interpretation itself is not scientifically validated and is not a guaranteed prediction. Do not use it for medical diagnosis, guaranteed financial outcomes or deterministic life decisions.
 
 ## Star or support the author
 

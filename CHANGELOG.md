@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.4
+
+- Make the Skill require a 15-minute host-tool timeout for first setup and forbid setup retries while `.setup.lock` identifies a live installer.
+- Require every post-install operation to use the unified `scripts/4pie.py` launcher instead of internal scripts.
+- Make the standalone Bazi L1 diagnostic explicitly emit UTF-8 as a second layer of Windows protection.
+- Print first-install duration and timeout guidance before setup begins.
+
 ## 1.0.3
 
 - Force UTF-8 at every Zi Wei Node boundary and unified CLI child process, independent of the Windows console code page or `PYTHONUTF8` shell state.

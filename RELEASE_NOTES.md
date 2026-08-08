@@ -1,8 +1,8 @@
-# 4PIE Deep Reader 1.0.3
+# 4PIE Deep Reader 1.0.4
 
 Cross-platform production release of the four-system deep-reading and Plain Deep PDF pipeline.
 
-This maintenance release removes two Windows first-run failure modes: Zi Wei output is decoded as UTF-8 regardless of the active console code page, and concurrent setup retries are serialized instead of competing for pip files. It retains the Star call-to-action and optional PayMe, Alipay and PayPal support page.
+This maintenance release fixes the remaining agent-execution failure mode: first setup is explicitly treated as a 2–10 minute operation with a required 15-minute host timeout, and a timed-out outer tool must wait for the live `.setup.lock` owner instead of invoking setup again. All post-install commands now route through the UTF-8-safe unified launcher; standalone Bazi L1 output is UTF-8-safe as a fallback.
 
 ## Release guarantees
 
