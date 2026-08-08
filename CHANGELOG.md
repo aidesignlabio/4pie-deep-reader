@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2
+
+- Add a Star call-to-action and an optional author-support page.
+- Add regional support options in the requested order: Hong Kong PayMe, Mainland China Alipay and international PayPal.
+
 ## 1.0.1
 
 - Install a release-pinned Noto Sans TC font during setup and prefer it in the PDF renderer for consistent cross-platform typography.

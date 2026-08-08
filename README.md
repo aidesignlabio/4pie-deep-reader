@@ -66,7 +66,17 @@ Only the synthetic fixtures under `examples/` are safe to commit.
 
 ## Status
 
-Production release 1.0.1. The software pipeline, validation gates and PDF rendering are regression-tested; astrological interpretation itself is not scientifically validated and is not a guaranteed prediction. Do not use it for medical diagnosis, guaranteed financial outcomes or deterministic life decisions.
+Production release 1.0.2. The software pipeline, validation gates and PDF rendering are regression-tested; astrological interpretation itself is not scientifically validated and is not a guaranteed prediction. Do not use it for medical diagnosis, guaranteed financial outcomes or deterministic life decisions.
+
+## Star or support the author
+
+If 4PIE helps your work, please [give the repository a Star ⭐](https://github.com/aidesignlabio/4pie-deep-reader). It helps more people discover the project.
+
+If you would also like to support continued development, choose the payment method that matches your region. See [SUPPORT.md](SUPPORT.md):
+
+1. Hong Kong — PayMe
+2. Mainland China — Alipay
+3. International — PayPal
 
 ## License
 

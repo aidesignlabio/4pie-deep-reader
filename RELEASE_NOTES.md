@@ -1,6 +1,8 @@
-# 4PIE Deep Reader 1.0.1
+# 4PIE Deep Reader 1.0.2
 
 Cross-platform production release of the four-system deep-reading and Plain Deep PDF pipeline.
+
+This maintenance release adds a clear Star call-to-action and an optional author-support page for PayMe, Alipay and PayPal.
 
 ## Release guarantees
 

@@ -70,4 +70,14 @@ macOS／Linux：
 python scripts/privacy_scan.py .
 ```
 
-目前版本為 1.0.1 正式發佈版。計算流程、Production Gate 與 PDF 渲染均有回歸測試；命理解讀本身不宣稱科學驗證或預測準確率。Production Approval 代表資料與流程完整，不代表命理結論經科學驗證。
+目前版本為 1.0.2 正式發佈版。計算流程、Production Gate 與 PDF 渲染均有回歸測試；命理解讀本身不宣稱科學驗證或預測準確率。Production Approval 代表資料與流程完整，不代表命理結論經科學驗證。
+
+## 點 Star 或支持作者
+
+如果 4PIE 對你有幫助，歡迎先為[這個倉庫點一個 Star ⭐](https://github.com/aidesignlabio/4pie-deep-reader)，讓更多人找到這個專案。
+
+如果你也想支持作者繼續開發，可到 [SUPPORT.md](SUPPORT.md) 按所在地選擇：
+
+1. 香港 — PayMe
+2. 中國內地 — 支付寶
+3. 國際 — PayPal
