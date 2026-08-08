@@ -10,14 +10,15 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Paragraph
 
 W,H=A4; MM=72/25.4
+ROOT=Path(__file__).resolve().parents[1]
 BG=colors.HexColor('#F7F4EE'); NAVY=colors.HexColor('#17324D'); BODY=colors.HexColor('#34414D'); MUTED=colors.HexColor('#71808D'); LINE=colors.HexColor('#D8E0E5')
 BLUE=colors.HexColor('#6F93AE'); SOFT=colors.HexColor('#EAF1F5'); GREEN=colors.HexColor('#DDEBE8'); AMBER=colors.HexColor('#F3E6D2'); PURPLE=colors.HexColor('#E9E4EF'); WHITE=colors.white
 
 def _font_path(bold=False):
     override=os.environ.get('FOURPIE_FONT_BOLD' if bold else 'FOURPIE_FONT_REGULAR')
     if override and Path(override).is_file(): return Path(override)
-    names=['msjhbd.ttc','NotoSansTC-Bold.ttf','NotoSansCJKtc-Bold.otf'] if bold else ['msjh.ttc','NotoSansTC-Regular.ttf','NotoSansCJKtc-Regular.otf']
-    roots=(Path('C:/Windows/Fonts'),Path('/usr/share/fonts/opentype/noto'),Path('/usr/share/fonts/truetype/noto'),Path('/usr/local/share/fonts'),Path.home()/'.fonts')
+    names=['NotoSansTC-Variable.ttf','msjhbd.ttc','NotoSansTC-Bold.ttf','NotoSansCJKtc-Bold.otf'] if bold else ['NotoSansTC-Variable.ttf','msjh.ttc','NotoSansTC-Regular.ttf','NotoSansCJKtc-Regular.otf']
+    roots=(ROOT/'assets'/'fonts',Path('C:/Windows/Fonts'),Path('/usr/share/fonts/opentype/noto'),Path('/usr/share/fonts/truetype/noto'),Path('/usr/local/share/fonts'),Path.home()/'.fonts')
     for root in roots:
         for name in names:
             candidate=root/name

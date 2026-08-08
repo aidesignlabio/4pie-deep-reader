@@ -9,5 +9,5 @@ tmp/
 *.pdf
 *.png
 *.zip
+assets/fonts/*.ttf
 .DS_Store
-

@@ -36,7 +36,7 @@ Setup is one-time. For later cases, run `.venv\Scripts\python scripts\4pie.py do
 ./setup.sh
 ```
 
-The installer creates the ignored `.venv`, installs Python dependencies in the required order, runs `npm install` for pinned `iztro@2.5.8`, and executes a synthetic four-system chart. A successful install ends with `FOUR_SYSTEM_SMOKE_OK` and `4PIE_READY`.
+The installer creates the ignored `.venv`, installs Python dependencies in the required order, downloads the release-pinned Noto Sans TC font into an ignored local asset directory, runs `npm install` for pinned `iztro@2.5.8`, and executes a synthetic four-system chart. This keeps the PDF typography consistent on Windows, macOS and Linux without requiring a system CJK font. A successful install ends with `FONT_READY`, `FOUR_SYSTEM_SMOKE_OK` and `4PIE_READY`.
 
 ```powershell
 python scripts/4pie.py calculate --datetime "2000-01-01 12:00" --timezone UTC --lat 0 --lon 0 --gender F --as-of 2026-01-01 --output private_cases/demo/chart_data.json
@@ -66,7 +66,7 @@ Only the synthetic fixtures under `examples/` are safe to commit.
 
 ## Status
 
-Production release 1.0.0. The software pipeline, validation gates and PDF rendering are regression-tested; astrological interpretation itself is not scientifically validated and is not a guaranteed prediction. Do not use it for medical diagnosis, guaranteed financial outcomes or deterministic life decisions.
+Production release 1.0.1. The software pipeline, validation gates and PDF rendering are regression-tested; astrological interpretation itself is not scientifically validated and is not a guaranteed prediction. Do not use it for medical diagnosis, guaranteed financial outcomes or deterministic life decisions.
 
 ## License
 

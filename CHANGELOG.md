@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+- Install a release-pinned Noto Sans TC font during setup and prefer it in the PDF renderer for consistent cross-platform typography.
+- Fix Unix setup execution in GitHub Actions and enforce UTF-8 for Windows regression tests.
+- Validate the complete setup and regression suite on both Ubuntu and Windows.
+
 ## 1.0.0
 
 - Promote the tested Plain Deep pipeline to the first production release.
