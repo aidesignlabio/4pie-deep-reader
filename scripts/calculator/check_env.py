@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import importlib
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -28,6 +29,9 @@ def check() -> dict:
             cwd=node_dir,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="strict",
+            env={**os.environ, "PYTHONIOENCODING": "utf-8"},
             timeout=15,
         )
         result["iztro"] = {"ok": completed.returncode == 0, "version": completed.stdout.strip(), "error": completed.stderr.strip()}

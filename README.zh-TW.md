@@ -62,7 +62,7 @@ macOS／Linux：
 
 安裝器會建立隔離的 `.venv`、按正確順序安裝吠陀及PDF依賴、把版本鎖定的 Noto Sans TC 字體下載到已忽略的本地資產目錄、安裝固定版本 `iztro@2.5.8`，最後實算一個合成四派命盤。Windows、macOS、Linux 因此不需要預先安裝繁中字體，也能維持相同 PDF 字型。成功時必須同時出現 `FONT_READY`、`FOUR_SYSTEM_SMOKE_OK` 和 `4PIE_READY`。
 
-安裝只需執行一次。之後先用 `.venv\Scripts\python scripts\4pie.py doctor` 做數秒級檢查，不應為每個案例重新安裝依賴或複製 `node_modules`。
+安裝只需執行一次。如果重試時看到 `SETUP_WAITING`，代表上一個安裝程序仍在執行；安裝器會等待，不會再啟動第二個 pip/npm。讓原程序完成後，再用 `.venv\Scripts\python scripts\4pie.py doctor` 做數秒級檢查，不應為每個案例重新安裝依賴或複製 `node_modules`。紫微子程序固定使用 UTF-8，不需要手動設定 `PYTHONUTF8`。
 
 詳細工作方式見 [SKILL.md](SKILL.md)。真實個案必須放入已忽略的 `private_cases/`，公開前執行：
 
@@ -70,7 +70,7 @@ macOS／Linux：
 python scripts/privacy_scan.py .
 ```
 
-目前版本為 1.0.2 正式發佈版。計算流程、Production Gate 與 PDF 渲染均有回歸測試；命理解讀本身不宣稱科學驗證或預測準確率。Production Approval 代表資料與流程完整，不代表命理結論經科學驗證。
+目前版本為 1.0.3 正式發佈版。計算流程、Production Gate 與 PDF 渲染均有回歸測試；命理解讀本身不宣稱科學驗證或預測準確率。Production Approval 代表資料與流程完整，不代表命理結論經科學驗證。
 
 ## 點 Star 或支持作者
 

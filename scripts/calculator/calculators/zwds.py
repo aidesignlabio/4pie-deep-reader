@@ -4,6 +4,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, Optional
 import json
+import os
 import subprocess
 
 # Module-level paths(供 calculate_via_node 使用)
@@ -99,12 +100,18 @@ def calculate_via_node(
     ).replace("__DATE_STR__", f'"{date_str}"').replace("__TIME_IDX__", str(time_index)).replace("__GENDER__", gender_str)
 
     try:
+        child_env = os.environ.copy()
+        child_env["PYTHONIOENCODING"] = "utf-8"
+        child_env["LANG"] = child_env.get("LANG", "C.UTF-8")
         result = subprocess.run(
             ["node", "-e", node_script],
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="strict",
             timeout=15,
-            cwd=str(_NODE_DIR)
+            cwd=str(_NODE_DIR),
+            env=child_env,
         )
         if result.returncode == 0:
             return json.loads(result.stdout)

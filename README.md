@@ -30,7 +30,7 @@ If Windows resolves `python` to a broken launcher, pass a real interpreter expli
 .\setup.ps1 -Python "C:\path\to\python.exe"
 ```
 
-Setup is one-time. For later cases, run `.venv\Scripts\python scripts\4pie.py doctor`; do not reinstall dependencies. PDF output defaults to the compact `plain-deep` edition. The expanded `dashboard` edition is opt-in.
+Setup is one-time. If a previous setup is still running, a retry prints `SETUP_WAITING` and waits instead of starting a second pip/npm installation; let the first run finish. For later cases, run `.venv\Scripts\python scripts\4pie.py doctor`; do not reinstall dependencies. PDF output defaults to the compact `plain-deep` edition. The expanded `dashboard` edition is opt-in.
 
 ```bash
 ./setup.sh
@@ -66,7 +66,7 @@ Only the synthetic fixtures under `examples/` are safe to commit.
 
 ## Status
 
-Production release 1.0.2. The software pipeline, validation gates and PDF rendering are regression-tested; astrological interpretation itself is not scientifically validated and is not a guaranteed prediction. Do not use it for medical diagnosis, guaranteed financial outcomes or deterministic life decisions.
+Production release 1.0.3. The software pipeline, validation gates and PDF rendering are regression-tested; astrological interpretation itself is not scientifically validated and is not a guaranteed prediction. Do not use it for medical diagnosis, guaranteed financial outcomes or deterministic life decisions.
 
 ## Star or support the author
 

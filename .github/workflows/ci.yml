@@ -32,7 +32,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          $env:PYTHONUTF8 = '1'
+          Remove-Item Env:PYTHONUTF8 -ErrorAction SilentlyContinue
           Get-ChildItem tests\test_*.py | ForEach-Object { & .\.venv\Scripts\python.exe $_.FullName; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE } }
       - name: Run regression tests (Unix)
         if: runner.os != 'Windows'

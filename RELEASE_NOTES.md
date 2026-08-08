@@ -1,8 +1,8 @@
-# 4PIE Deep Reader 1.0.2
+# 4PIE Deep Reader 1.0.3
 
 Cross-platform production release of the four-system deep-reading and Plain Deep PDF pipeline.
 
-This maintenance release adds a clear Star call-to-action and an optional author-support page for PayMe, Alipay and PayPal.
+This maintenance release removes two Windows first-run failure modes: Zi Wei output is decoded as UTF-8 regardless of the active console code page, and concurrent setup retries are serialized instead of competing for pip files. It retains the Star call-to-action and optional PayMe, Alipay and PayPal support page.
 
 ## Release guarantees
 

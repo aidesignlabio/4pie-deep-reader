@@ -7,6 +7,10 @@ description: "Calculate, validate and independently interpret Bazi, Zi Wei Dou S
 
 Treat calculation, interpretation, adjudication, scoring and presentation as separate layers.
 
+## Runtime setup
+
+Run `setup.ps1` on Windows or `setup.sh` on macOS/Linux once. A successful setup ends with `4PIE_READY`. If a retry prints `SETUP_WAITING`, another setup is already active: do not launch more installers; wait for that run to finish, then use `scripts/4pie.py doctor`. Zi Wei subprocess output is decoded explicitly as UTF-8, so users must not need to set `PYTHONUTF8` manually.
+
 ## Required workflow
 
 1. Read [architecture.md](references/architecture.md) and [privacy-policy.md](references/privacy-policy.md).

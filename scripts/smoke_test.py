@@ -10,7 +10,9 @@ def main():
         cmd=[sys.executable,str(ROOT/"scripts"/"calculator"/"run.py"),
              "--datetime","2000-01-01 12:00","--timezone","UTC","--lat","0","--lon","0",
              "--gender","F","--as-of","2026-01-01","--output",str(out)]
-        result=subprocess.run(cmd,capture_output=True,text=True,env=os.environ.copy(),timeout=180)
+        child_env=os.environ.copy()
+        child_env["PYTHONIOENCODING"]="utf-8"
+        result=subprocess.run(cmd,capture_output=True,text=True,encoding="utf-8",errors="strict",env=child_env,timeout=180)
         if result.returncode:
             print(result.stdout); print(result.stderr,file=sys.stderr); return result.returncode
         data=json.loads(out.read_text(encoding="utf-8"))
@@ -23,4 +25,3 @@ def main():
         print("FOUR_SYSTEM_SMOKE_OK")
     return 0
 if __name__=="__main__": raise SystemExit(main())
-
