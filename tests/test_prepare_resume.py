@@ -28,6 +28,11 @@ def main():
         assert second.returncode == 0
         assert chart.stat().st_mtime_ns == original_mtime
         bundle = json.loads((case / "analysis_bundle.json").read_text(encoding="utf-8"))
+        context_path = case / "analysis_context.json"
+        context = json.loads(context_path.read_text(encoding="utf-8"))
+        assert context["schema_version"] == "analysis_context_v1"
+        assert context["professional_gate"]["no_core_downgrades"] is True
+        assert context_path.stat().st_size < (case / "analysis_bundle.json").stat().st_size * .6
         assert bundle["requested_years"] == [2026, 2027, 2028, 2029, 2030]
         assert bundle["execution_policy"]["annual_full_chart_recalculation"] == "prohibited"
         third = subprocess.run(command(case))

@@ -45,10 +45,10 @@
 個案請優先使用可續跑的單一入口；健康環境和已完成排盤會直接重用：
 
 ```powershell
-.\run-report.ps1 -Birth "2000-01-01 12:00" -Timezone "UTC" -Latitude 0 -Longitude 0 -Gender F -CaseDir "private_cases/demo" -AsOf "2026-01-01" -StartYear 2026
+.\run-report.ps1 -Birth "2000-01-01 12:00" -Timezone "UTC" -Latitude 0 -Longitude 0 -Gender F -CaseDir "private_cases/demo" -AsOf "2026-01-01" -StartYear 2026 -Mode deep
 ```
 
-此命令只執行一次四派本命計算和一次八字 L1，產生 `analysis_bundle.json`。相同個案重跑會續接或重用既有階段；禁止為五個年度分別重算五張完整命盤。
+此命令只執行一次四派本命計算和一次八字 L1，產生精簡的 `analysis_context.json`。Agent 只寫一份 `analysis_master.json`，其餘 Dossier、裁決、評分及 Reader 由程式自動生成。`standard` 與 `deep` 使用相同專業門檻，只調整解釋密度。
 
 Windows：
 

@@ -8,16 +8,17 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Paragraph
+from reportlab.lib.utils import ImageReader
 
 W,H=A4; MM=72/25.4
 ROOT=Path(__file__).resolve().parents[1]
-BG=colors.HexColor('#F7F4EE'); NAVY=colors.HexColor('#17324D'); BODY=colors.HexColor('#34414D'); MUTED=colors.HexColor('#71808D'); LINE=colors.HexColor('#D8E0E5')
+BG=colors.HexColor('#F7F4EE'); NAVY=colors.HexColor('#17324D'); BODY=colors.HexColor('#263746'); MUTED=colors.HexColor('#566875'); LINE=colors.HexColor('#D8E0E5')
 BLUE=colors.HexColor('#6F93AE'); SOFT=colors.HexColor('#EAF1F5'); GREEN=colors.HexColor('#DDEBE8'); AMBER=colors.HexColor('#F3E6D2'); PURPLE=colors.HexColor('#E9E4EF'); WHITE=colors.white
 
 def _font_path(bold=False):
     override=os.environ.get('FOURPIE_FONT_BOLD' if bold else 'FOURPIE_FONT_REGULAR')
     if override and Path(override).is_file(): return Path(override)
-    names=['NotoSansTC-Variable.ttf','msjhbd.ttc','NotoSansTC-Bold.ttf','NotoSansCJKtc-Bold.otf'] if bold else ['NotoSansTC-Variable.ttf','msjh.ttc','NotoSansTC-Regular.ttf','NotoSansCJKtc-Regular.otf']
+    names=['msjhbd.ttc','NotoSansTC-Bold.ttf','NotoSansCJKtc-Bold.otf','NotoSansTC-Variable.ttf'] if bold else ['msjh.ttc','NotoSansTC-Regular.ttf','NotoSansCJKtc-Regular.otf','NotoSansTC-Variable.ttf']
     roots=(ROOT/'assets'/'fonts',Path('C:/Windows/Fonts'),Path('/usr/share/fonts/opentype/noto'),Path('/usr/share/fonts/truetype/noto'),Path('/usr/local/share/fonts'),Path.home()/'.fonts')
     for root in roots:
         for name in names:
@@ -34,8 +35,8 @@ S={
  'h1':ParagraphStyle('h1',fontName='TCB',fontSize=29,leading=34,textColor=NAVY),
  'h2':ParagraphStyle('h2',fontName='TCB',fontSize=18,leading=23,textColor=NAVY),
  'h3':ParagraphStyle('h3',fontName='TCB',fontSize=11.5,leading=15,textColor=NAVY),
- 'body':ParagraphStyle('body',fontName='TC',fontSize=9.2,leading=13.8,textColor=BODY),
- 'small':ParagraphStyle('small',fontName='TC',fontSize=7.7,leading=11,textColor=MUTED),
+ 'body':ParagraphStyle('body',fontName='TCB',fontSize=9.35,leading=14,textColor=BODY),
+ 'small':ParagraphStyle('small',fontName='TCB',fontSize=7.8,leading=11.2,textColor=MUTED),
  'center':ParagraphStyle('center',fontName='TC',fontSize=8.5,leading=12,textColor=BODY,alignment=TA_CENTER),
 }
 
@@ -59,5 +60,7 @@ def cover(c,title,subject,thesis,generated):
     path=c.beginPath(); path.moveTo(pts[0][0]*MM,pts[0][1]*MM)
     for x,y in pts[1:]: path.lineTo(x*MM,y*MM)
     path.close(); c.drawPath(path,1,1); c.setStrokeColor(WHITE); c.setLineWidth(4); path=c.beginPath(); path.moveTo(105*MM,0); path.curveTo(95*MM,45*MM,126*MM,62*MM,105*MM,119*MM); c.drawPath(path)
+    logo=ROOT/'assets'/'branding'/'aidesignlab-logo.png'
+    if logo.is_file(): c.drawImage(ImageReader(str(logo)),W-47*MM,H-49*MM,25*MM,25*MM,mask='auto',preserveAspectRatio=True,anchor='c')
     c.setFillColor(NAVY); c.setFont('TCB',38); c.drawString(18*MM,H-48*MM,'4PIE'); c.setFont('TCB',29); c.drawString(18*MM,H-70*MM,title)
-    c.setFont('TC',10); c.setFillColor(BLUE); c.drawString(18*MM,H-80*MM,'PERSONAL STRATEGY REPORT'); para(c,thesis,18*MM,H-111*MM,125*MM,20*MM,'h3'); para(c,f'{subject}\n西洋占星 · 紫微斗數 · 吠陀占星 · 八字\n生成日期 {generated}',18*MM,31*MM,125*MM,25*MM,'small'); end(c)
+    c.setFont('TCB',10); c.setFillColor(BLUE); c.drawString(18*MM,H-80*MM,'PERSONAL STRATEGY REPORT'); para(c,thesis,18*MM,H-111*MM,125*MM,20*MM,'h3'); para(c,f'{subject}\n西洋占星 · 紫微斗數 · 吠陀占星 · 八字\n生成日期 {generated}',18*MM,31*MM,125*MM,25*MM,'small'); para(c,'AiDesignLab.io',W-66*MM,25*MM,48*MM,7*MM,'small'); end(c)

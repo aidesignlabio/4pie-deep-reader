@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.6
+
+- Replace repeated artifact authoring with one compact `analysis_context.json`, one agent-authored `analysis_master.json`, and deterministic materialization.
+- Add Standard and Deep Reader modes without lowering four-school calculation or Production Approval requirements.
+- Add a delivery packager and restrict privacy scanning to shareable delivery artifacts rather than private calculation folders.
+- Add the AiDesignLab.io cover logo, author metadata, branded footer and stronger Traditional Chinese typography.
+- Add master materialization, scoring, production rendering and PDF QA regressions.
+
 ## 1.0.5
 
 - Add `run-report.ps1` and `scripts/4pie.py prepare` as the resumable single preparation entry point.

@@ -19,8 +19,25 @@ def write_json(path: Path, value: object) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def write_compact_json(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
+
 def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def compact(value, depth=0):
+    """Remove bulky diagnostics while retaining every interpretation-grade field."""
+    if depth > 12:
+        return value
+    if isinstance(value, dict):
+        blocked = {"raw", "debug", "trace", "stdout", "stderr", "formatted_report"}
+        return {k: compact(v, depth + 1) for k, v in value.items() if k not in blocked}
+    if isinstance(value, list):
+        return [compact(v, depth + 1) for v in value]
+    return value
 
 
 def input_contract(args: argparse.Namespace) -> dict:
@@ -77,6 +94,7 @@ def main() -> int:
     parser.add_argument("--gender", required=True)
     parser.add_argument("--as-of", required=True)
     parser.add_argument("--start-year", type=int, default=2026)
+    parser.add_argument("--mode", choices=("standard", "deep"), default="deep")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--stop-after", choices=("chart",), help=argparse.SUPPRESS)
     args = parser.parse_args()
@@ -89,6 +107,7 @@ def main() -> int:
     structured_path = case_dir / "structured_data.md"
     bazi_path = case_dir / "bazi_l1.json"
     bundle_path = case_dir / "analysis_bundle.json"
+    context_path = case_dir / "analysis_context.json"
     contract = input_contract(args)
     contract_hash = fingerprint(contract)
 
@@ -100,6 +119,7 @@ def main() -> int:
         "schema_version": "prepare_v1",
         "input_hash": contract_hash,
         "input": contract,
+        "report_mode": args.mode,
         "policy": {
             "single_natal_calculation": True,
             "annual_full_chart_recalculation": "prohibited",
@@ -150,11 +170,31 @@ def main() -> int:
         "agent_next_step": "Create all four dossiers, adjudication, score_input, fate_packet and report.md in one analysis pass; do not recalculate charts.",
     }
     write_json(bundle_path, bundle)
+    context = {
+        "schema_version": "analysis_context_v1",
+        "input_hash": contract_hash,
+        "chart_id": chart.get("chart_id"),
+        "report_mode": args.mode,
+        "reader_length": {"standard": [3500, 5500], "deep": [7000, 10000]}[args.mode],
+        "requested_years": bundle["requested_years"],
+        "professional_gate": {
+            "four_native_dossiers": True,
+            "competing_versions_per_major_claim": 2,
+            "cross_school_positions_required": True,
+            "falsifiable_revision_condition": True,
+            "no_core_downgrades": True,
+        },
+        "systems": compact(chart.get("systems", {})),
+        "bazi_l1": compact(bazi_l1),
+        "validation_summary": chart.get("validation_summary", {}),
+        "agent_next_step": "Read this file once; write analysis_master.json once; run materialize. Do not hand-write duplicate artifacts.",
+    }
+    write_compact_json(context_path, context)
     stages["analysis_bundle"] = {"status": "complete", "reused": False}
     state["status"] = "analysis_ready"
     state["updated_at"] = datetime.now(timezone.utc).isoformat()
     write_json(state_path, state)
-    print(json.dumps({"status": "analysis_ready", "case_dir": str(case_dir), "bundle": str(bundle_path), "chart_reused": stages["chart"]["reused"], "bazi_reused": stages["bazi_l1"]["reused"]}, ensure_ascii=False))
+    print(json.dumps({"status": "analysis_ready", "case_dir": str(case_dir), "context": str(context_path), "chart_reused": stages["chart"]["reused"], "bazi_reused": stages["bazi_l1"]["reused"]}, ensure_ascii=False))
     return 0
 
 

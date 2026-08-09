@@ -7,6 +7,7 @@ param(
   [Parameter(Mandatory=$true)][string]$CaseDir,
   [string]$AsOf = (Get-Date -Format 'yyyy-MM-dd'),
   [int]$StartYear = 2026,
+  [ValidateSet('standard','deep')][string]$Mode = 'deep',
   [string]$Python = $env:FOURPIE_PYTHON,
   [switch]$Force
 )
@@ -28,7 +29,7 @@ try {
   } else {
     Write-Host '4PIE_ENV_REUSED doctor=ok setup=skipped'
   }
-  $prepareArgs = @('scripts\4pie.py','prepare','--case-dir',$CaseDir,'--datetime',$Birth,'--timezone',$Timezone,'--lat',[string]$Latitude,'--lon',[string]$Longitude,'--gender',$Gender,'--as-of',$AsOf,'--start-year',[string]$StartYear)
+  $prepareArgs = @('scripts\4pie.py','prepare','--case-dir',$CaseDir,'--datetime',$Birth,'--timezone',$Timezone,'--lat',[string]$Latitude,'--lon',[string]$Longitude,'--gender',$Gender,'--as-of',$AsOf,'--start-year',[string]$StartYear,'--mode',$Mode)
   if ($Force) { $prepareArgs += '--force' }
   & $venvPython @prepareArgs
   exit $LASTEXITCODE
