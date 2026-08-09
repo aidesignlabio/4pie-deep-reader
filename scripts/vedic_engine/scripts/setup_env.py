@@ -43,6 +43,7 @@ REQUIRED_PACKAGES = [
     ("pypdf", ">=5.0", []),                           # 13. PDF validation
     ("Pillow", ">=10.0", []),                         # 14. PDF contact sheets
     ("PyMuPDF", ">=1.24", []),                        # 15. Cross-platform PDF page rendering
+    ("fonttools", ">=4.53", []),                       # 16. Deterministic static CJK font weights
 ]
 
 MIN_PYTHON = (3, 8)

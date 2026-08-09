@@ -103,6 +103,7 @@ def main():
         with setup_lock():
             if run([sys.executable,SETUP,"--target",VENV]): return 1
             if ensure_font(): return 5
+            if run([venv_python(),ROOT/"scripts"/"prepare_font_instances.py"]): return 5
             npm=shutil.which("npm.cmd" if platform.system()=="Windows" else "npm") or shutil.which("npm")
             if not npm:
                 print("ERROR: Node.js/npm is required for Zi Wei calculation.")

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.7
+
+- Replace the 7,000-character Deep gate with evidence-coverage gates and a 5,000-character anti-truncation floor.
+- Require three native outcomes per school, eight adjudicated domains, five consequential judgments and an eight-row consensus matrix.
+- Package custom-named or explicitly selected PDFs and recognize both `pdf-qa` and `pdf_qa` result folders.
+- Add exact end-stage commands and prohibit generic padding written only to pass character counts.
+- Generate fixed Noto Sans TC SemiBold 600 body text and Bold 750 headings for consistent black-type legibility across platforms.
+
 ## 1.0.6
 
 - Replace repeated artifact authoring with one compact `analysis_context.json`, one agent-authored `analysis_master.json`, and deterministic materialization.

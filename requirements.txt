@@ -7,3 +7,4 @@ PyYAML>=6.0
 reportlab>=4.2
 pypdf>=5.0
 Pillow>=10.0
+fonttools>=4.53

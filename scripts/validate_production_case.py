@@ -35,12 +35,14 @@ def validate(case_dir, start_year):
         if bazi.get("structure_decision",{}).get("status") not in ("verified","conditional_structure"): errors.append("bazi_structure:not_adjudicated")
 
     dossier_dir=case_dir/"dossiers"
+    dossier_outcome_counts={}
     for school in SCHOOLS:
         dossier=load(dossier_dir/f"{school}.json",errors)
         if dossier and dossier.get("status") not in ("locked","approved","ok"):
             errors.append(f"dossier:{school}:not_locked")
         if dossier and not dossier.get("outcomes"):
             errors.append(f"dossier:{school}:no_outcomes")
+        if dossier: dossier_outcome_counts[school]=len(dossier.get("outcomes") or [])
 
     if adjudication:
         rows=adjudication.get("fate_adjudication") or adjudication.get("domains") or []
@@ -71,13 +73,21 @@ def validate(case_dir, start_year):
     if manifest.is_file():
         try: mode=json.loads(manifest.read_text(encoding="utf-8")).get("input",{}).get("mode") or json.loads(manifest.read_text(encoding="utf-8")).get("report_mode") or "deep"
         except Exception: pass
+    if mode in ("standard","deep"):
+        for school,count in dossier_outcome_counts.items():
+            if count<3: errors.append(f"professional_coverage:dossier:{school}:expected_3:got_{count}")
+        adjudication_rows=(adjudication or {}).get("fate_adjudication") or (adjudication or {}).get("domains") or []
+        if len(adjudication_rows)<8: errors.append(f"professional_coverage:adjudication:expected_8:got_{len(adjudication_rows)}")
+        if packet:
+            if len(packet.get("consequential_judgments") or [])<5: errors.append("professional_coverage:consequential_judgments:expected_5")
+            if len(packet.get("consensus_matrix") or [])<8: errors.append("professional_coverage:consensus_matrix:expected_8")
     if report.is_file():
         text=report.read_text(encoding="utf-8")
         titles=[line for line in text.splitlines() if line.startswith("# ")]
         chapters=[line for line in text.splitlines() if line.startswith("## ")]
         chapter_count=max(0,len(titles)-1)+len(chapters)
         if not titles or chapter_count<8: errors.append("report:requires_title_and_at_least_8_chapters")
-        minimum={"standard":3500,"deep":7000,"legacy":5000}[mode]
+        minimum={"standard":3500,"deep":5000,"legacy":5000}[mode]
         if len(text.strip())<minimum: errors.append(f"report:too_short_for_{mode}:{len(text.strip())}<{minimum}")
     return {"ok":not errors,"errors":errors,"case_dir":str(case_dir),"start_year":start_year}
 

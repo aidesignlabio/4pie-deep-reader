@@ -50,6 +50,8 @@
 
 此命令只執行一次四派本命計算和一次八字 L1，產生精簡的 `analysis_context.json`。Agent 只寫一份 `analysis_master.json`，其餘 Dossier、裁決、評分及 Reader 由程式自動生成。`standard` 與 `deep` 使用相同專業門檻，只調整解釋密度。
 
+Deep Approval 依據證據覆蓋，不再要求湊足7,000字：每派至少三項原生判斷、八域裁決、五項重大結論、八列共識矩陣與五年判詞。安裝器會生成固定的 Noto Sans TC SemiBold／Bold 黑體字重，避免不同電腦顯示過幼。
+
 Windows：
 
 ```powershell
