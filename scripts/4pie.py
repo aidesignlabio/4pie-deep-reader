@@ -5,6 +5,7 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parent
 COMMANDS={
+    "prepare": ROOT/"prepare_case.py",
     "calculate": ROOT/"calculator"/"run.py",
     "bazi-l1": ROOT/"adjudicate_bazi_l1.py",
     "score": ROOT/"score_domains.py",

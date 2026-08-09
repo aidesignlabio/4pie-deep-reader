@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.5
+
+- Add `run-report.ps1` and `scripts/4pie.py prepare` as the resumable single preparation entry point.
+- Cache the validated four-school chart and Bazi L1 by an input fingerprint; repeated runs reuse completed stages and mismatched inputs cannot overwrite a case silently.
+- Produce one `analysis_bundle.json` with five requested years from the original calculation instead of recalculating five complete charts.
+- Make divisional minute sensitivity on-demand and require one bounded Agent analysis pass plus at most one revision.
+- Add an interruption/resume/idempotence regression using a real four-school calculation.
+
 ## 1.0.4
 
 - Make the Skill require a 15-minute host-tool timeout for first setup and forbid setup retries while `.setup.lock` identifies a live installer.

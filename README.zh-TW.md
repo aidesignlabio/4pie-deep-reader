@@ -42,6 +42,14 @@
 
 ## 一鍵安裝
 
+個案請優先使用可續跑的單一入口；健康環境和已完成排盤會直接重用：
+
+```powershell
+.\run-report.ps1 -Birth "2000-01-01 12:00" -Timezone "UTC" -Latitude 0 -Longitude 0 -Gender F -CaseDir "private_cases/demo" -AsOf "2026-01-01" -StartYear 2026
+```
+
+此命令只執行一次四派本命計算和一次八字 L1，產生 `analysis_bundle.json`。相同個案重跑會續接或重用既有階段；禁止為五個年度分別重算五張完整命盤。
+
 Windows：
 
 ```powershell
@@ -72,7 +80,7 @@ macOS／Linux：
 python scripts/privacy_scan.py .
 ```
 
-目前版本為 1.0.4 正式發佈版。計算流程、Production Gate 與 PDF 渲染均有回歸測試；命理解讀本身不宣稱科學驗證或預測準確率。Production Approval 代表資料與流程完整，不代表命理結論經科學驗證。
+目前版本為 1.0.5 正式發佈版。計算流程、Production Gate 與 PDF 渲染均有回歸測試；命理解讀本身不宣稱科學驗證或預測準確率。Production Approval 代表資料與流程完整，不代表命理結論經科學驗證。
 
 ## 點 Star 或支持作者
 

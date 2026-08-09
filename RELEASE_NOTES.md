@@ -1,8 +1,8 @@
-# 4PIE Deep Reader 1.0.4
+# 4PIE Deep Reader 1.0.5
 
 Cross-platform production release of the four-system deep-reading and Plain Deep PDF pipeline.
 
-This maintenance release fixes the remaining agent-execution failure mode: first setup is explicitly treated as a 2–10 minute operation with a required 15-minute host timeout, and a timed-out outer tool must wait for the live `.setup.lock` owner instead of invoking setup again. All post-install commands now route through the UTF-8-safe unified launcher; standalone Bazi L1 output is UTF-8-safe as a fallback.
+This release introduces the fast resumable report pipeline. One command checks or installs the environment, calculates the four-school natal chart once, completes Bazi L1 once, caches stages by input fingerprint and produces a single analysis bundle. Five-year reporting reuses the bundle rather than recalculating five charts, and divisional sensitivity runs only when a final claim requires it. The Agent performs one bounded analysis pass and at most one validation revision.
 
 ## Release guarantees
 

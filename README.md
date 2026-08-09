@@ -18,6 +18,14 @@ Scores are reading indices, not empirical probabilities or guarantees.
 
 ## Quick start
 
+For a case, use the resumable single preparation entry point. It reuses a healthy environment and cached calculations:
+
+```powershell
+.\run-report.ps1 -Birth "2000-01-01 12:00" -Timezone "UTC" -Latitude 0 -Longitude 0 -Gender F -CaseDir "private_cases/demo" -AsOf "2026-01-01" -StartYear 2026
+```
+
+The command produces `analysis_bundle.json` from one four-system calculation and Bazi L1 pass. Re-running the same case resumes or reuses completed stages. Requested annual rulings must use the existing bundle; five separate full-chart calculations are prohibited.
+
 Install and verify the complete isolated runtime:
 
 ```powershell
@@ -68,7 +76,7 @@ Only the synthetic fixtures under `examples/` are safe to commit.
 
 ## Status
 
-Production release 1.0.4. The software pipeline, validation gates and PDF rendering are regression-tested; astrological interpretation itself is not scientifically validated and is not a guaranteed prediction. Do not use it for medical diagnosis, guaranteed financial outcomes or deterministic life decisions.
+Production release 1.0.5. The software pipeline, validation gates and PDF rendering are regression-tested; astrological interpretation itself is not scientifically validated and is not a guaranteed prediction. Do not use it for medical diagnosis, guaranteed financial outcomes or deterministic life decisions.
 
 ## Star or support the author
 
