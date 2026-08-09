@@ -26,6 +26,8 @@ For a case, use the resumable single preparation entry point. It reuses a health
 
 The command produces a compact `analysis_context.json` from one four-system calculation and Bazi L1 pass. The Agent writes one `analysis_master.json`; `materialize` deterministically creates the remaining artifacts and scores. Use `-Mode standard` for a shorter Reader or `-Mode deep` for the complete edition. Both retain identical professional gates.
 
+Deep approval is based on evidence coverage rather than padding: three native outcomes per school, eight adjudicated domains, five consequential judgments, an eight-row consensus matrix and five complete annual rulings. The PDF installer generates fixed Noto Sans TC SemiBold/Bold instances for consistent black-type legibility.
+
 Install and verify the complete isolated runtime:
 
 ```powershell

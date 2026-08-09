@@ -12,13 +12,15 @@ from reportlab.lib.utils import ImageReader
 
 W,H=A4; MM=72/25.4
 ROOT=Path(__file__).resolve().parents[1]
-BG=colors.HexColor('#F7F4EE'); NAVY=colors.HexColor('#17324D'); BODY=colors.HexColor('#263746'); MUTED=colors.HexColor('#566875'); LINE=colors.HexColor('#D8E0E5')
+BG=colors.HexColor('#F7F4EE'); NAVY=colors.HexColor('#17324D'); BODY=colors.HexColor('#182733'); MUTED=colors.HexColor('#445661'); LINE=colors.HexColor('#D8E0E5')
 BLUE=colors.HexColor('#6F93AE'); SOFT=colors.HexColor('#EAF1F5'); GREEN=colors.HexColor('#DDEBE8'); AMBER=colors.HexColor('#F3E6D2'); PURPLE=colors.HexColor('#E9E4EF'); WHITE=colors.white
 
-def _font_path(bold=False):
-    override=os.environ.get('FOURPIE_FONT_BOLD' if bold else 'FOURPIE_FONT_REGULAR')
+def _font_path(weight='regular'):
+    override=os.environ.get({'bold':'FOURPIE_FONT_BOLD','semibold':'FOURPIE_FONT_SEMIBOLD','regular':'FOURPIE_FONT_REGULAR'}[weight])
     if override and Path(override).is_file(): return Path(override)
-    names=['msjhbd.ttc','NotoSansTC-Bold.ttf','NotoSansCJKtc-Bold.otf','NotoSansTC-Variable.ttf'] if bold else ['msjh.ttc','NotoSansTC-Regular.ttf','NotoSansCJKtc-Regular.otf','NotoSansTC-Variable.ttf']
+    if weight=='bold': names=['NotoSansTC-Bold.ttf','msjhbd.ttc','NotoSansCJKtc-Bold.otf','NotoSansTC-Variable.ttf']
+    elif weight=='semibold': names=['NotoSansTC-SemiBold.ttf','msjhbd.ttc','NotoSansTC-Bold.ttf','NotoSansTC-Variable.ttf']
+    else: names=['NotoSansTC-Regular.ttf','msjh.ttc','NotoSansCJKtc-Regular.otf','NotoSansTC-Variable.ttf']
     roots=(ROOT/'assets'/'fonts',Path('C:/Windows/Fonts'),Path('/usr/share/fonts/opentype/noto'),Path('/usr/share/fonts/truetype/noto'),Path('/usr/local/share/fonts'),Path.home()/'.fonts')
     for root in roots:
         for name in names:
@@ -27,16 +29,17 @@ def _font_path(bold=False):
     raise RuntimeError('Traditional Chinese font not found. Install Noto Sans CJK TC or set FOURPIE_FONT_REGULAR and FOURPIE_FONT_BOLD.')
 
 def register_fonts():
-    if 'TC' not in pdfmetrics.getRegisteredFontNames(): pdfmetrics.registerFont(TTFont('TC',str(_font_path(False))))
-    if 'TCB' not in pdfmetrics.getRegisteredFontNames(): pdfmetrics.registerFont(TTFont('TCB',str(_font_path(True))))
+    if 'TC' not in pdfmetrics.getRegisteredFontNames(): pdfmetrics.registerFont(TTFont('TC',str(_font_path('regular'))))
+    if 'TCS' not in pdfmetrics.getRegisteredFontNames(): pdfmetrics.registerFont(TTFont('TCS',str(_font_path('semibold'))))
+    if 'TCB' not in pdfmetrics.getRegisteredFontNames(): pdfmetrics.registerFont(TTFont('TCB',str(_font_path('bold'))))
 
 register_fonts()
 S={
  'h1':ParagraphStyle('h1',fontName='TCB',fontSize=29,leading=34,textColor=NAVY),
  'h2':ParagraphStyle('h2',fontName='TCB',fontSize=18,leading=23,textColor=NAVY),
  'h3':ParagraphStyle('h3',fontName='TCB',fontSize=11.5,leading=15,textColor=NAVY),
- 'body':ParagraphStyle('body',fontName='TCB',fontSize=9.35,leading=14,textColor=BODY),
- 'small':ParagraphStyle('small',fontName='TCB',fontSize=7.8,leading=11.2,textColor=MUTED),
+ 'body':ParagraphStyle('body',fontName='TCS',fontSize=9.35,leading=14,textColor=BODY),
+ 'small':ParagraphStyle('small',fontName='TCS',fontSize=7.8,leading=11.2,textColor=MUTED),
  'center':ParagraphStyle('center',fontName='TC',fontSize=8.5,leading=12,textColor=BODY,alignment=TA_CENTER),
 }
 

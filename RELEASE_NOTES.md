@@ -1,6 +1,8 @@
-# 4PIE Deep Reader 1.0.6
+# 4PIE Deep Reader 1.0.7
 
-Faster single-master production release of the four-system deep-reading and branded Plain Deep PDF pipeline.
+Evidence-coverage and heavy-type release of the four-system deep-reading and branded Plain Deep PDF pipeline.
+
+This release removes the 7,000-character padding incentive. Deep reports pass on complete native derivations and eight-domain coverage with a 5,000-character anti-truncation floor. Delivery packaging accepts custom PDF names, and the PDF uses deterministic Noto Sans TC SemiBold 600 body text plus Bold 750 headings on every supported platform.
 
 This release replaces repeated Agent artifact authoring with one compact context, one canonical master analysis and deterministic materialization. Standard and Deep modes share the same calculation, native-analysis and Production Approval gates. The PDF adds AiDesignLab.io branding and stronger Traditional Chinese typography, while delivery packaging avoids rescanning private technical artifacts.
 
