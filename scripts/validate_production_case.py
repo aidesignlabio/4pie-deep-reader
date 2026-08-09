@@ -66,13 +66,19 @@ def validate(case_dir, start_year):
             value=row.get(key,row.get("fortune_score") if key=="flow_score" else None)
             if not isinstance(value,(int,float)) or not 0<=value<=100: errors.append(f"scores:{index}:{key}:invalid")
 
+    mode="legacy"
+    manifest=case_dir/"prepare_manifest.json"
+    if manifest.is_file():
+        try: mode=json.loads(manifest.read_text(encoding="utf-8")).get("input",{}).get("mode") or json.loads(manifest.read_text(encoding="utf-8")).get("report_mode") or "deep"
+        except Exception: pass
     if report.is_file():
         text=report.read_text(encoding="utf-8")
         titles=[line for line in text.splitlines() if line.startswith("# ")]
         chapters=[line for line in text.splitlines() if line.startswith("## ")]
         chapter_count=max(0,len(titles)-1)+len(chapters)
         if not titles or chapter_count<8: errors.append("report:requires_title_and_at_least_8_chapters")
-        if len(text.strip())<5000: errors.append("report:too_short_for_deep_reader")
+        minimum={"standard":3500,"deep":7000,"legacy":5000}[mode]
+        if len(text.strip())<minimum: errors.append(f"report:too_short_for_{mode}:{len(text.strip())}<{minimum}")
     return {"ok":not errors,"errors":errors,"case_dir":str(case_dir),"start_year":start_year}
 
 def main():

@@ -8,6 +8,8 @@ output/
 tmp/
 *.pdf
 *.png
+!assets/branding/
+!assets/branding/aidesignlab-logo.png
 *.zip
 assets/fonts/*.ttf
 .DS_Store

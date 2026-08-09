@@ -1,6 +1,8 @@
-# 4PIE Deep Reader 1.0.5
+# 4PIE Deep Reader 1.0.6
 
-Cross-platform production release of the four-system deep-reading and Plain Deep PDF pipeline.
+Faster single-master production release of the four-system deep-reading and branded Plain Deep PDF pipeline.
+
+This release replaces repeated Agent artifact authoring with one compact context, one canonical master analysis and deterministic materialization. Standard and Deep modes share the same calculation, native-analysis and Production Approval gates. The PDF adds AiDesignLab.io branding and stronger Traditional Chinese typography, while delivery packaging avoids rescanning private technical artifacts.
 
 This release introduces the fast resumable report pipeline. One command checks or installs the environment, calculates the four-school natal chart once, completes Bazi L1 once, caches stages by input fingerprint and produces a single analysis bundle. Five-year reporting reuses the bundle rather than recalculating five charts, and divisional sensitivity runs only when a final claim requires it. The Agent performs one bounded analysis pass and at most one validation revision.
 

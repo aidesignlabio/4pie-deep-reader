@@ -21,10 +21,10 @@ Scores are reading indices, not empirical probabilities or guarantees.
 For a case, use the resumable single preparation entry point. It reuses a healthy environment and cached calculations:
 
 ```powershell
-.\run-report.ps1 -Birth "2000-01-01 12:00" -Timezone "UTC" -Latitude 0 -Longitude 0 -Gender F -CaseDir "private_cases/demo" -AsOf "2026-01-01" -StartYear 2026
+.\run-report.ps1 -Birth "2000-01-01 12:00" -Timezone "UTC" -Latitude 0 -Longitude 0 -Gender F -CaseDir "private_cases/demo" -AsOf "2026-01-01" -StartYear 2026 -Mode deep
 ```
 
-The command produces `analysis_bundle.json` from one four-system calculation and Bazi L1 pass. Re-running the same case resumes or reuses completed stages. Requested annual rulings must use the existing bundle; five separate full-chart calculations are prohibited.
+The command produces a compact `analysis_context.json` from one four-system calculation and Bazi L1 pass. The Agent writes one `analysis_master.json`; `materialize` deterministically creates the remaining artifacts and scores. Use `-Mode standard` for a shorter Reader or `-Mode deep` for the complete edition. Both retain identical professional gates.
 
 Install and verify the complete isolated runtime:
 

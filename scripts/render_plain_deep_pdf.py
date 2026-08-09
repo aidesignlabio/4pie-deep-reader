@@ -17,10 +17,10 @@ ST={
  'h1':ParagraphStyle('body_h1',fontName='TCB',fontSize=20,leading=27,textColor=NAVY,spaceBefore=4,spaceAfter=12),
  'h2':ParagraphStyle('body_h2',fontName='TCB',fontSize=14.2,leading=20,textColor=NAVY,spaceBefore=12,spaceAfter=7),
  'h3':ParagraphStyle('body_h3',fontName='TCB',fontSize=11.2,leading=16,textColor=NAVY,spaceBefore=8,spaceAfter=5),
- 'body':ParagraphStyle('body_text',fontName='TC',fontSize=10.15,leading=17.2,textColor=BODY,spaceAfter=8,allowWidows=0,allowOrphans=0),
- 'bullet':ParagraphStyle('body_bullet',fontName='TC',fontSize=9.8,leading=16.2,textColor=BODY,leftIndent=12,firstLineIndent=-8,spaceAfter=4),
+ 'body':ParagraphStyle('body_text',fontName='TCB',fontSize=10.25,leading=17.35,textColor=BODY,spaceAfter=8,allowWidows=0,allowOrphans=0),
+ 'bullet':ParagraphStyle('body_bullet',fontName='TCB',fontSize=9.9,leading=16.35,textColor=BODY,leftIndent=12,firstLineIndent=-8,spaceAfter=4),
  'quote':ParagraphStyle('body_quote',fontName='TCB',fontSize=11.2,leading=18,textColor=NAVY,leftIndent=5,rightIndent=5),
- 'small':ParagraphStyle('body_small',fontName='TC',fontSize=8.4,leading=12.5,textColor=MUTED),
+ 'small':ParagraphStyle('body_small',fontName='TCB',fontSize=8.5,leading=12.7,textColor=MUTED),
 }
 
 def inline(text):
@@ -54,7 +54,7 @@ def markdown_story(md):
 
 def body_pdf(md,path,label):
     def chrome(c,doc):
-        c.saveState(); c.setFillColor(BG); c.rect(0,0,A4[0],A4[1],0,1); c.setStrokeColor(LINE); c.line(18*mm,15*mm,A4[0]-18*mm,15*mm); c.setFont('TC',7.6); c.setFillColor(MUTED); c.drawString(18*mm,8.5*mm,label); c.drawRightString(A4[0]-18*mm,8.5*mm,f'{doc.page+4:02d}'); c.restoreState()
+        c.saveState(); c.setFillColor(BG); c.rect(0,0,A4[0],A4[1],0,1); c.setStrokeColor(LINE); c.line(18*mm,15*mm,A4[0]-18*mm,15*mm); c.setFont('TCB',7.6); c.setFillColor(MUTED); c.drawString(18*mm,8.5*mm,'AiDesignLab.io · '+label); c.drawRightString(A4[0]-18*mm,8.5*mm,f'{doc.page+4:02d}'); c.restoreState()
     frame=Frame(18*mm,20*mm,A4[0]-36*mm,A4[1]-37*mm,id='main',leftPadding=0,rightPadding=0,topPadding=0,bottomPadding=0); doc=BaseDocTemplate(str(path),pagesize=A4); doc.addPageTemplates(PageTemplate('editorial',[frame],onPage=chrome)); doc.build(markdown_story(md))
 
 def chapter_titles(md):
@@ -103,7 +103,7 @@ def main():
         body_pdf(md,body,'4PIE 深讀報告'); titles=chapter_titles(md); front_pdf(front,titles,page_map(body,titles),scores,packet,a.title,a.subject,a.generated,a.start_year); writer=PdfWriter()
         for src in (front,body):
             for page in PdfReader(str(src)).pages: writer.add_page(page)
-        writer.add_metadata({'/Title':a.title,'/Author':'4PIE'}); writer.write(str(a.output)); print(a.output)
+        writer.add_metadata({'/Title':a.title,'/Author':'AiDesignLab.io','/Creator':'4PIE Deep Reader'}); writer.write(str(a.output)); print(a.output)
     except Exception:
         if a.output.exists(): a.output.unlink()
         raise
