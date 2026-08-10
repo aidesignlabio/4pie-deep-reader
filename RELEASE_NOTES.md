@@ -1,6 +1,8 @@
-# 4PIE Deep Reader 1.0.7
+# 4PIE Deep Reader 1.1.0 International Edition
 
-Evidence-coverage and heavy-type release of the four-system deep-reading and branded Plain Deep PDF pipeline.
+International bilingual release of the four-system deep-reading and branded Plain Deep PDF pipeline.
+
+This release adds first-class Traditional Chinese and English Readers. Both languages use the same locked chart calculations, native dossiers, adjudication, scores, timing windows and professional gates. The English Reader is composed directly from approved claims rather than translated from a completed Chinese report. The complete Plain Deep PDF interface is localized.
 
 This release removes the 7,000-character padding incentive. Deep reports pass on complete native derivations and eight-domain coverage with a 5,000-character anti-truncation floor. Delivery packaging accepts custom PDF names, and the PDF uses deterministic Noto Sans TC SemiBold 600 body text plus Bold 750 headings on every supported platform.
 

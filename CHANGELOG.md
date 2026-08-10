@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0
+
+- Add first-class `zh-TW` and `en` report languages using the same locked calculations, claims, scores and timing rulings.
+- Localize the Plain Deep cover, contents, score dashboard, time index, headers, footers and PDF metadata.
+- Add an English Reader policy that requires direct composition from approved claims rather than translation of a finished report.
+- Write `report.en.md` or `report.zh-TW.md` alongside the canonical production Reader.
+- Add English PDF rendering, extraction and visual QA regressions.
+
 ## 1.0.7
 
 - Replace the 7,000-character Deep gate with evidence-coverage gates and a 5,000-character anti-truncation floor.

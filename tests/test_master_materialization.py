@@ -10,6 +10,7 @@ def main():
         positions={s:{"position":"support"} for s in SCHOOLS}
         master={
             "schema_version":"analysis_master_v1",
+            "language":"en",
             "dossiers":{s:{"status":"locked","outcomes":[{"claim":"synthetic"}]} for s in SCHOOLS},
             "adjudication":{"fate_adjudication":[{"domain":"career","school_positions":positions}]},
             "score_input":{"domains":[{
@@ -25,6 +26,7 @@ def main():
         assert all((case/"dossiers"/f"{s}.json").is_file() for s in SCHOOLS)
         assert len(json.loads((case/"domain_scores.json").read_text(encoding="utf-8"))["domains"])==8
         assert json.loads((case/"fate_packet.json").read_text(encoding="utf-8"))["fate_adjudication"]
+        assert (case/"report.en.md").is_file()
         print("master_materialization_ok")
 
 if __name__=="__main__": main()

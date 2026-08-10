@@ -95,6 +95,7 @@ def main() -> int:
     parser.add_argument("--as-of", required=True)
     parser.add_argument("--start-year", type=int, default=2026)
     parser.add_argument("--mode", choices=("standard", "deep"), default="deep")
+    parser.add_argument("--language", choices=("zh-TW", "en"), default="zh-TW")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--stop-after", choices=("chart",), help=argparse.SUPPRESS)
     args = parser.parse_args()
@@ -120,6 +121,7 @@ def main() -> int:
         "input_hash": contract_hash,
         "input": contract,
         "report_mode": args.mode,
+        "language": args.language,
         "policy": {
             "single_natal_calculation": True,
             "annual_full_chart_recalculation": "prohibited",
@@ -175,6 +177,7 @@ def main() -> int:
         "input_hash": contract_hash,
         "chart_id": chart.get("chart_id"),
         "report_mode": args.mode,
+        "language": args.language,
         "reader_length": {"standard": [3500, 5500], "deep": [7000, 10000]}[args.mode],
         "requested_years": bundle["requested_years"],
         "professional_gate": {
@@ -187,7 +190,7 @@ def main() -> int:
         "systems": compact(chart.get("systems", {})),
         "bazi_l1": compact(bazi_l1),
         "validation_summary": chart.get("validation_summary", {}),
-        "agent_next_step": "Read this file once; write analysis_master.json once; run materialize. Do not hand-write duplicate artifacts.",
+        "agent_next_step": f"Read this file once; write analysis_master.json once in {args.language}; run materialize. Do not translate a finished report or hand-write duplicate artifacts.",
     }
     write_compact_json(context_path, context)
     stages["analysis_bundle"] = {"status": "complete", "reused": False}

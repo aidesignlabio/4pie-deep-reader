@@ -22,6 +22,10 @@ ST={
  'quote':ParagraphStyle('body_quote',fontName='TCB',fontSize=11.2,leading=18,textColor=NAVY,leftIndent=5,rightIndent=5),
  'small':ParagraphStyle('body_small',fontName='TCS',fontSize=8.5,leading=12.7,textColor=MUTED),
 }
+I18N={
+ 'zh-TW':{'section_note':'裁決、候選版本、四派證據與修正條件同頁呈現','body_label':'4PIE 深讀報告','contents':'目錄與閱讀路線','contents_sub':'先讀結論及評分，再按人生領域進入深讀正文。','dashboard':'八領域評分 Dashboard','dashboard_sub':'四項分數回答不同問題；分數是閱讀索引，不是命運保證或人格價值。','metrics':('順勢','潛力','阻力','信心'),'time':'時間索引','time_sub':'先看事件次序，再到正文閱讀成立條件與失效邊界。','theme':'年度主題','thesis':'四派先獨立推演，再比較人生版本與成立條件。'},
+ 'en':{'section_note':'Ruling, competing versions, four-system evidence and revision conditions','body_label':'4PIE Deep Report','contents':'Contents & Reading Path','contents_sub':'Read the rulings and score dashboard first, then enter each life domain.','dashboard':'Eight-Domain Score Dashboard','dashboard_sub':'Each metric answers a different question. Scores are reading indices, not guarantees.','metrics':('Flow','Potential','Friction','Confidence'),'time':'Time Index','time_sub':'Read the sequence first, then review conditions and failure rules in the report.','theme':'Annual theme','thesis':'Four systems reason independently before competing life versions are adjudicated.'}
+}
 
 def inline(text):
     placeholders=[]
@@ -32,7 +36,7 @@ def inline(text):
         text=text.replace(f'\x00{index}\x00',replacement)
     return text
 
-def markdown_story(md):
+def markdown_story(md,language='zh-TW'):
     story=[]; buf=[]
     def flush():
         if buf:
@@ -42,7 +46,7 @@ def markdown_story(md):
         line=raw.strip()
         if not line: flush(); continue
         if line.startswith('# '):
-            flush(); title=line[2:].strip(); table=Table([[Paragraph(inline(title),ST['h1']),Paragraph('裁決、候選版本、四派證據與修正條件同頁呈現',ST['small'])]],colWidths=[102*mm,56*mm]); table.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,-1),SOFT),('BOX',(0,0),(-1,-1),.6,LINE),('VALIGN',(0,0),(-1,-1),'TOP'),('LEFTPADDING',(0,0),(-1,-1),9),('RIGHTPADDING',(0,0),(-1,-1),9),('TOPPADDING',(0,0),(-1,-1),10),('BOTTOMPADDING',(0,0),(-1,-1),10)])); story.extend([Spacer(1,12),table,Spacer(1,10)])
+            flush(); title=line[2:].strip(); table=Table([[Paragraph(inline(title),ST['h1']),Paragraph(I18N[language]['section_note'],ST['small'])]],colWidths=[102*mm,56*mm]); table.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,-1),SOFT),('BOX',(0,0),(-1,-1),.6,LINE),('VALIGN',(0,0),(-1,-1),'TOP'),('LEFTPADDING',(0,0),(-1,-1),9),('RIGHTPADDING',(0,0),(-1,-1),9),('TOPPADDING',(0,0),(-1,-1),10),('BOTTOMPADDING',(0,0),(-1,-1),10)])); story.extend([Spacer(1,12),table,Spacer(1,10)])
         elif line.startswith('## '): flush(); story.extend([Paragraph(inline(line[3:]),ST['h2']),HRFlowable(width='100%',thickness=.45,color=LINE,spaceAfter=5)])
         elif line.startswith('### '): flush(); story.append(Paragraph(inline(line[4:]),ST['h3']))
         elif line.startswith('>'):
@@ -52,10 +56,10 @@ def markdown_story(md):
         elif not line.startswith('```'): buf.append(line)
     flush(); return story
 
-def body_pdf(md,path,label):
+def body_pdf(md,path,label,language):
     def chrome(c,doc):
         c.saveState(); c.setFillColor(BG); c.rect(0,0,A4[0],A4[1],0,1); c.setStrokeColor(LINE); c.line(18*mm,15*mm,A4[0]-18*mm,15*mm); c.setFont('TCS',7.6); c.setFillColor(MUTED); c.drawString(18*mm,8.5*mm,'AiDesignLab.io · '+label); c.drawRightString(A4[0]-18*mm,8.5*mm,f'{doc.page+4:02d}'); c.restoreState()
-    frame=Frame(18*mm,20*mm,A4[0]-36*mm,A4[1]-37*mm,id='main',leftPadding=0,rightPadding=0,topPadding=0,bottomPadding=0); doc=BaseDocTemplate(str(path),pagesize=A4); doc.addPageTemplates(PageTemplate('editorial',[frame],onPage=chrome)); doc.build(markdown_story(md))
+    frame=Frame(18*mm,20*mm,A4[0]-36*mm,A4[1]-37*mm,id='main',leftPadding=0,rightPadding=0,topPadding=0,bottomPadding=0); doc=BaseDocTemplate(str(path),pagesize=A4); doc.addPageTemplates(PageTemplate('editorial',[frame],onPage=chrome)); doc.build(markdown_story(md,language))
 
 def chapter_titles(md):
     h1=[x[2:].strip() for x in md.splitlines() if x.startswith('# ')]
@@ -67,9 +71,9 @@ def page_map(body,titles):
         key=title.replace('｜','').replace('：','').replace(' ','')[:6]; result[title]=next((i+5 for i,text in enumerate(texts) if key in text.replace('｜','').replace('：','')),'—')
     return result
 
-def front_pdf(path,titles,pages,scores,packet,title,subject,generated,start_year):
-    c=canvas.Canvas(str(path),pagesize=A4,pageCompression=1); thesis=(packet or {}).get('core_thesis') or '四派先獨立推演，再比較人生版本與成立條件。'; d.cover(c,title,subject,thesis,generated)
-    d.header(c,2,'CONTENTS','目錄與閱讀路線','先讀結論及評分，再按人生領域進入深讀正文。')
+def front_pdf(path,titles,pages,scores,packet,title,subject,generated,start_year,language):
+    ui=I18N[language]; c=canvas.Canvas(str(path),pagesize=A4,pageCompression=1); thesis=(packet or {}).get('core_thesis') or ui['thesis']; d.cover(c,title,subject,thesis,generated,language)
+    d.header(c,2,'CONTENTS',ui['contents'],ui['contents_sub'],ui['body_label'])
     if not titles or len(titles)>14: raise ValueError(f'contents requires 1-14 chapters, got {len(titles)}')
     missing=[name for name in titles if pages.get(name)=='—']
     if missing: raise ValueError(f'contents page mapping failed: {missing}')
@@ -77,12 +81,12 @@ def front_pdf(path,titles,pages,scores,packet,title,subject,generated,start_year
     for i,name in enumerate(titles[:14]):
         y=(220-i*step)*mm; d.card(c,18*mm,y,174*mm,13*mm,SOFT if i%2==0 else WHITE,shadow=False,r=4); d.para(c,f'{i:02d}',23*mm,y+3*mm,13*mm,7*mm,'small'); d.para(c,name,40*mm,y+3*mm,125*mm,7*mm,'body'); d.para(c,str(pages[name]),173*mm,y+3*mm,12*mm,7*mm,'h3')
     d.end(c)
-    d.header(c,3,'DOMAIN SCOREBOARD','八領域評分 Dashboard','四項分數回答不同問題；分數是閱讀索引，不是命運保證或人格價值。')
+    d.header(c,3,'DOMAIN SCOREBOARD',ui['dashboard'],ui['dashboard_sub'],ui['body_label'])
     rows=((scores or {}).get('domains') or (scores or {}).get('natal_dimensions') or [])[:8]
     if len(rows)!=8: raise ValueError(f'exactly 8 scored domains required, got {len(rows)}')
     for i,item in enumerate(rows):
         col=i%2; row=i//2; x=(18+col*90)*mm; y=(197-row*43)*mm; d.card(c,x,y,83*mm,38*mm,WHITE); d.para(c,str(item.get('label') or item.get('domain')),x+5*mm,y+26*mm,35*mm,8*mm,'h3')
-        for j,(key,name,color) in enumerate((('flow_score','順勢',d.BLUE),('potential_score','潛力',colors.HexColor('#4F8D82')),('friction_score','阻力',colors.HexColor('#C4914E')),('confidence_score','信心',NAVY))):
+        for j,(key,name,color) in enumerate(zip(('flow_score','potential_score','friction_score','confidence_score'),ui['metrics'],(d.BLUE,colors.HexColor('#4F8D82'),colors.HexColor('#C4914E'),NAVY))):
             val=item.get(key,item.get('fortune_score') if key=='flow_score' else None)
             if not isinstance(val,(int,float)) or not 0<=val<=100: raise ValueError(f'invalid {key} for score row {i}')
             yy=y+(22-j*5.6)*mm; d.para(c,name,x+43*mm,yy,10*mm,5*mm,'small'); c.setFillColor(colors.HexColor('#E7ECEF')); c.roundRect(x+54*mm,yy+.8*mm,19*mm,3.2*mm,1.6*mm,0,1)
@@ -91,16 +95,16 @@ def front_pdf(path,titles,pages,scores,packet,title,subject,generated,start_year
     d.end(c)
     annual_by_year={int(x['year']):x for x in (packet or {}).get('annual_rulings',[]) if str(x.get('year','')).isdigit()}; expected=list(range(start_year,start_year+5)); missing_years=[year for year in expected if year not in annual_by_year]
     if missing_years: raise ValueError(f'missing annual rulings for {missing_years}')
-    d.header(c,4,'TIME INDEX',f'{start_year}-{start_year+4} 時間索引','先看事件次序，再到正文閱讀成立條件與失效邊界。'); annual=[annual_by_year[year] for year in expected]; c.setStrokeColor(d.BLUE); c.setLineWidth(3); c.line(31*mm,210*mm,31*mm,66*mm)
+    d.header(c,4,'TIME INDEX',f'{start_year}-{start_year+4} {ui["time"]}',ui['time_sub'],ui['body_label']); annual=[annual_by_year[year] for year in expected]; c.setStrokeColor(d.BLUE); c.setLineWidth(3); c.line(31*mm,210*mm,31*mm,66*mm)
     for i,item in enumerate(annual):
-        y=(197-i*32)*mm; c.setFillColor(NAVY); c.circle(31*mm,y+8*mm,5*mm,0,1); d.card(c,43*mm,y-5*mm,149*mm,26*mm,(GREEN,SOFT,PURPLE,AMBER,GREEN)[i],shadow=False); d.para(c,str(item.get('year')),49*mm,y+7*mm,22*mm,8*mm,'h2'); d.para(c,str(item.get('central_task') or item.get('theme') or '年度主題'),75*mm,y+8*mm,105*mm,7*mm,'h3'); detail=item.get('strongest_opportunity') or item.get('result_preparing_next_year') or ''; d.para(c,str(detail),75*mm,y-1*mm,105*mm,7*mm,'small')
+        y=(197-i*32)*mm; c.setFillColor(NAVY); c.circle(31*mm,y+8*mm,5*mm,0,1); d.card(c,43*mm,y-5*mm,149*mm,26*mm,(GREEN,SOFT,PURPLE,AMBER,GREEN)[i],shadow=False); d.para(c,str(item.get('year')),49*mm,y+7*mm,22*mm,8*mm,'h2'); d.para(c,str(item.get('central_task') or item.get('theme') or ui['theme']),75*mm,y+8*mm,105*mm,7*mm,'h3'); detail=item.get('strongest_opportunity') or item.get('result_preparing_next_year') or ''; d.para(c,str(detail),75*mm,y-1*mm,105*mm,7*mm,'small')
     d.end(c); c.save()
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument('markdown',type=Path); ap.add_argument('output',type=Path); ap.add_argument('--packet',type=Path,required=True); ap.add_argument('--scores',type=Path,required=True); ap.add_argument('--title',default='命運裁決報告'); ap.add_argument('--subject',required=True); ap.add_argument('--generated',default=date.today().isoformat()); ap.add_argument('--start-year',type=int,default=2026)
+    ap=argparse.ArgumentParser(); ap.add_argument('markdown',type=Path); ap.add_argument('output',type=Path); ap.add_argument('--packet',type=Path,required=True); ap.add_argument('--scores',type=Path,required=True); ap.add_argument('--title',default='命運裁決報告'); ap.add_argument('--subject',required=True); ap.add_argument('--generated',default=date.today().isoformat()); ap.add_argument('--start-year',type=int,default=2026); ap.add_argument('--language',choices=('zh-TW','en'),default='zh-TW')
     a=ap.parse_args(); md=a.markdown.read_text(encoding='utf-8'); packet=json.loads(a.packet.read_text(encoding='utf-8')); scores=json.loads(a.scores.read_text(encoding='utf-8')); a.output.parent.mkdir(parents=True,exist_ok=True); body=a.output.with_suffix('.body.tmp.pdf'); front=a.output.with_suffix('.front.tmp.pdf')
     try:
-        body_pdf(md,body,'4PIE 深讀報告'); titles=chapter_titles(md); front_pdf(front,titles,page_map(body,titles),scores,packet,a.title,a.subject,a.generated,a.start_year); writer=PdfWriter()
+        body_pdf(md,body,I18N[a.language]['body_label'],a.language); titles=chapter_titles(md); front_pdf(front,titles,page_map(body,titles),scores,packet,a.title,a.subject,a.generated,a.start_year,a.language); writer=PdfWriter()
         for src in (front,body):
             for page in PdfReader(str(src)).pages: writer.add_page(page)
         writer.add_metadata({'/Title':a.title,'/Author':'AiDesignLab.io','/Creator':'4PIE Deep Reader'}); writer.write(str(a.output)); print(a.output)

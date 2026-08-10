@@ -68,10 +68,11 @@ def validate(case_dir, start_year):
             value=row.get(key,row.get("fortune_score") if key=="flow_score" else None)
             if not isinstance(value,(int,float)) or not 0<=value<=100: errors.append(f"scores:{index}:{key}:invalid")
 
-    mode="legacy"
+    mode="legacy"; language="zh-TW"
     manifest=case_dir/"prepare_manifest.json"
     if manifest.is_file():
-        try: mode=json.loads(manifest.read_text(encoding="utf-8")).get("input",{}).get("mode") or json.loads(manifest.read_text(encoding="utf-8")).get("report_mode") or "deep"
+        try:
+            manifest_data=json.loads(manifest.read_text(encoding="utf-8")); mode=manifest_data.get("input",{}).get("mode") or manifest_data.get("report_mode") or "deep"; language=manifest_data.get("language","zh-TW")
         except Exception: pass
     if mode in ("standard","deep"):
         for school,count in dossier_outcome_counts.items():
@@ -89,6 +90,9 @@ def validate(case_dir, start_year):
         if not titles or chapter_count<8: errors.append("report:requires_title_and_at_least_8_chapters")
         minimum={"standard":3500,"deep":5000,"legacy":5000}[mode]
         if len(text.strip())<minimum: errors.append(f"report:too_short_for_{mode}:{len(text.strip())}<{minimum}")
+        latin=sum(ch.isascii() and ch.isalpha() for ch in text); cjk=sum('\u3400'<=ch<='\u9fff' for ch in text)
+        if language=="en" and (latin<1500 or latin<cjk*5): errors.append(f"report:language_mismatch:expected_en:latin_{latin}:cjk_{cjk}")
+        if language=="zh-TW" and mode!="legacy" and cjk<1000: errors.append(f"report:language_mismatch:expected_zh-TW:cjk_{cjk}")
     return {"ok":not errors,"errors":errors,"case_dir":str(case_dir),"start_year":start_year}
 
 def main():
