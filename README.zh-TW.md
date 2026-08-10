@@ -45,12 +45,14 @@
 個案請優先使用可續跑的單一入口；健康環境和已完成排盤會直接重用：
 
 ```powershell
-.\run-report.ps1 -Birth "2000-01-01 12:00" -Timezone "UTC" -Latitude 0 -Longitude 0 -Gender F -CaseDir "private_cases/demo" -AsOf "2026-01-01" -StartYear 2026 -Mode deep
+.\run-report.ps1 -Birth "2000-01-01 12:00" -Timezone "UTC" -Latitude 0 -Longitude 0 -Gender F -CaseDir "private_cases/demo" -AsOf "2026-01-01" -StartYear 2026 -Mode deep -Language zh-TW
 ```
 
 此命令只執行一次四派本命計算和一次八字 L1，產生精簡的 `analysis_context.json`。Agent 只寫一份 `analysis_master.json`，其餘 Dossier、裁決、評分及 Reader 由程式自動生成。`standard` 與 `deep` 使用相同專業門檻，只調整解釋密度。
 
 Deep Approval 依據證據覆蓋，不再要求湊足7,000字：每派至少三項原生判斷、八域裁決、五項重大結論、八列共識矩陣與五年判詞。安裝器會生成固定的 Noto Sans TC SemiBold／Bold 黑體字重，避免不同電腦顯示過幼。
+
+使用 `-Language en` 可直接生成英文Reader與全英文PDF介面。中英文共用相同排盤、裁決、分數和年份；英文由已鎖定判斷直接撰寫，不會翻譯中文成品後改變結論。
 
 Windows：
 

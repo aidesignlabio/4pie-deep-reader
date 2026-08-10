@@ -50,6 +50,11 @@ def main() -> int:
     write(case / "score_input.json", master.get("score_input") or {})
     write(case / "fate_packet.json", packet)
     (case / "report.md").write_text(report + "\n", encoding="utf-8")
+    language=master.get("language","zh-TW")
+    suffix="en" if language=="en" else "zh-TW"
+    (case / f"report.{suffix}.md").write_text(report + "\n", encoding="utf-8")
+    packet.setdefault("language",language)
+    write(case / "fate_packet.json", packet)
     env = os.environ.copy()
     env["PYTHONIOENCODING"] = "utf-8"
     subprocess.run([

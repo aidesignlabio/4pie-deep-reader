@@ -21,12 +21,14 @@ Scores are reading indices, not empirical probabilities or guarantees.
 For a case, use the resumable single preparation entry point. It reuses a healthy environment and cached calculations:
 
 ```powershell
-.\run-report.ps1 -Birth "2000-01-01 12:00" -Timezone "UTC" -Latitude 0 -Longitude 0 -Gender F -CaseDir "private_cases/demo" -AsOf "2026-01-01" -StartYear 2026 -Mode deep
+.\run-report.ps1 -Birth "2000-01-01 12:00" -Timezone "UTC" -Latitude 0 -Longitude 0 -Gender F -CaseDir "private_cases/demo" -AsOf "2026-01-01" -StartYear 2026 -Mode deep -Language en
 ```
 
 The command produces a compact `analysis_context.json` from one four-system calculation and Bazi L1 pass. The Agent writes one `analysis_master.json`; `materialize` deterministically creates the remaining artifacts and scores. Use `-Mode standard` for a shorter Reader or `-Mode deep` for the complete edition. Both retain identical professional gates.
 
 Deep approval is based on evidence coverage rather than padding: three native outcomes per school, eight adjudicated domains, five consequential judgments, an eight-row consensus matrix and five complete annual rulings. The PDF installer generates fixed Noto Sans TC SemiBold/Bold instances for consistent black-type legibility.
+
+`-Language zh-TW` and `-Language en` share one calculation and adjudication model. English is composed directly from approved claims; it is not a translation of a finished Chinese report. The PDF cover, contents, score dashboard, time index and running furniture are localized automatically.
 
 Install and verify the complete isolated runtime:
 

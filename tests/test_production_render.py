@@ -1,4 +1,4 @@
-import json, subprocess, sys, tempfile
+import json, os, shutil, subprocess, sys, tempfile
 from pathlib import Path
 from pypdf import PdfReader
 
@@ -23,6 +23,22 @@ def main():
         reader=PdfReader(str(output)); text="\n".join(p.extract_text() or "" for p in reader.pages)
         assert len(reader.pages)>4 and "2026-2030 時間索引" in text and "八領域評分 Dashboard" in text
         assert json.loads((qa/"pdf_qa.json").read_text(encoding="utf-8"))["qa_ok"]
+        english=Path(raw)/"report-en.pdf"; english_qa=Path(raw)/"qa-en"
+        english_chapters="\n\n".join(f"# English Chapter {i+1}\n\n"+("This synthetic paragraph validates the international report layout. "*55) for i in range(8))
+        (case/"report.md").write_text("# Synthetic International Report\n\n"+english_chapters,encoding="utf-8")
+        packet=json.loads((case/"fate_packet.json").read_text(encoding="utf-8")); packet["core_thesis"]="Independent systems adjudicate competing life versions."; packet["language"]="en"
+        for item in packet["annual_rulings"]: item["central_task"]=f"{item['year']} strategic focus"; item["strongest_opportunity"]="A testable opportunity"
+        dump(case/"fate_packet.json",packet)
+        scores=json.loads((case/"domain_scores.json").read_text(encoding="utf-8"));
+        for i,item in enumerate(scores["domains"]): item["label"]=f"Domain {i+1}"
+        dump(case/"domain_scores.json",scores)
+        subprocess.run([sys.executable,str(ROOT/"scripts"/"render_production_case.py"),str(case),str(english),"--subject","De-identified case","--generated","2026-08-08","--language","en"],check=True)
+        subprocess.run([sys.executable,str(ROOT/"scripts"/"qa_pdf.py"),str(english),"--output-dir",str(english_qa)],check=True)
+        english_text="\n".join(p.extract_text() or "" for p in PdfReader(str(english)).pages)
+        assert "Contents & Reading Path" in english_text and "Eight-Domain Score Dashboard" in english_text and "2026-2030 Time Index" in english_text
+        assert json.loads((english_qa/"pdf_qa.json").read_text(encoding="utf-8"))["qa_ok"]
+        if os.environ.get("FOURPIE_TEST_PDF_COPY"):
+            target=Path(os.environ["FOURPIE_TEST_PDF_COPY"]); target.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(english,target)
         print("production_render_ok")
 
 if __name__=="__main__": main()
